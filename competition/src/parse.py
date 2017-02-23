@@ -5,6 +5,14 @@ class Cache(object):
     def __init__(self, id, size):
         self.id = id
         self.size = size
+        self.parsed = { }
+
+    #Add a video that might be added on this server
+    def addCandidate(video, endpoint):
+        if self.preparsed.contains(video.index)
+            self.videoSavings[video.index] += endpoint.requests[video.index] * endpoint.latencies[self.id]
+        else:
+            self.videoSavings[video.index] = endpoint.requests[video.index] * endpoint.latencies[self.id]
 
 class CacheList(object):
     def __init__(self, cacheCount, cacheSize):
@@ -22,7 +30,7 @@ class VideoList(object):
 class Endpoint(object):
     def __init__(self, latencyList, requestList):
         self.latencies = {}
-        self.requests = {} # {Video.id, requestCount} 
+        self.requests = {} # {Video.id, requestCount}
 
 class EndpointList(object):
     def __init__(self, latencyList):
