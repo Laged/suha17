@@ -106,3 +106,10 @@ if __name__ == "__main__":
         pitsu.addSlice(0, 6, 0, 1)
     print "Addslice runtime", datetime.now()-start
     print pitsu.result()
+"""=======
+    dataset = sys.argv[1]
+    pitsu = Pizza('../data/' + dataset + '.in')
+    print pitsu.printPizza()
+    pitsu.addSlice(0, 1, 0, 1)
+    print pitsu.printSlices()
+>>>>>>> 3df6a5604da35e8fef6f5798ff3ad806633caa91"""
