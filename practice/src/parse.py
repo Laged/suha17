@@ -1,6 +1,9 @@
 import numpy as np
 import sys
 from datetime import datetime
+from random import randint, seed
+
+seed(1203)
 
 
 class Pizza(object):
@@ -11,7 +14,7 @@ class Pizza(object):
         self.columns = int(metadata[1])
         self.minIngredients = int(metadata[2])
         self.maxCells = int(metadata[3])
-        self.pizza = np.empty([self.rows, self.columns])
+        self.pizza = np.empty([self.rows, self.columns], dtype=int)
         self.pizza.astype(int)
         self.slices = np.empty([self.rows, self.columns], dtype=int)
         self.slices.fill(0)
@@ -55,8 +58,8 @@ class Pizza(object):
         }[e]
 
     def addSlice(self, r1, r2, c1, c2):
-        tomatoCount = 0
-        mushroomCount = 0
+        #Index 0 is for tomatos, index 1 for mushroom
+        counts = [0, 0]
 
         #Check input validity
         if (r2 > self.rows or c2 > self.columns):
@@ -71,20 +74,19 @@ class Pizza(object):
             return False
 
         #Check that the area is empty and has both stuffings
-        for row in range(r1, r2 + 1):
-            for column in range(c1, c2 + 1):
+        for row in xrange(r1, r2 + 1):
+            for column in xrange(c1, c2 + 1):
                 if (self.slices[row][column] != 0):
                     return True #Slice conflict
-                if (self.pizza[row][column] == 0):
-                    tomatoCount += 1
-                if (self.pizza[row][column] == 1):
-                    mushroomCount += 1
+                counts[self.pizza[row][column]] += 1
+        tomatoCount = counts[0]
+        mushroomCount = counts[1]
         if (tomatoCount < self.minIngredients or mushroomCount < self.minIngredients):
             return False
 
         #If everything is ok add the slice
-        for row in range(r1, r2 + 1):
-            for column in range(c1, c2 + 1):
+        for row in xrange(r1, r2 + 1):
+            for column in xrange(c1, c2 + 1):
                 self.slices[row][column] = self.sliceCounter
         self.sliceCounter += 1
         self.sliceCoordinates.append('%d %d %d %d' % (r1, r2, c1, c2))
@@ -108,7 +110,18 @@ class Pizza(object):
     def sliceCount(self):
         return self.sliceCounter
 
+def perfTest():
+    pitsu = Pizza('../data/big.in')
+    start=datetime.now()
+    for i in range(10000):
+        xStart = randint(100, 900)
+        yStart = randint(100, 900)
+        pitsu.addSlice(randint(0, 2) + xStart, randint(2,6) + xStart, randint(0, 2) + yStart, randint(2, 6) + yStart)
+    print "Addslice runtime", datetime.now()-start
+    print pitsu.result()
+
 if __name__ == "__main__":
+    #perfTest()
     dataset = sys.argv[1]
     pitsu = Pizza('../data/' + dataset + '.in')
     #print pitsu.printPizza()
