@@ -2,20 +2,20 @@ from math import pow
 from parse import *
 
 class HasSpace(object):
-    __init__(self, val, videoId, endPointId):
+    def __init__(self, val, videoId, endpointId):
         self.p = val
         self.videoId = videoId
-        self.endPointId = endPointId
+        self.endpointId = endpointId
 
     def setProbability(self):
         self.p = val
 
     def recalculate(self, videoId, endpointId):
-        if (videoId == self.videoId && endpointId == self.endpointId):
+        if (videoId == self.videoId and endpointId == self.endpointId):
             self.p = 0
 
 class Weight(object):
-    __init__(self, probs, latencies, endpointId):
+    def __init__(self, probs, latencies, endpointId):
         self.probs = probs
         self.latencies = latencies
         self.endpointId = endpointId
@@ -82,3 +82,5 @@ def preparse(endpoints):
         for video in endpoints.videos:
             if video.size < cache.size:
                 cache.addCandidate(video)
+
+main([], [], [])

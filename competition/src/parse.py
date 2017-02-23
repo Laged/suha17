@@ -18,7 +18,6 @@ class Cache(object):
         self.candidates.append(video)
 
     def requestAddition(self, video, weight):
-        #Tää kusahti
         if self.weights.contains(video.id)
             self.weights[video.id].append(weight)
         else:
