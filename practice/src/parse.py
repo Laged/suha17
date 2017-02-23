@@ -17,6 +17,7 @@ class Pizza(object):
         self.slices.fill(0)
         self.sliceCounter = 1
         self.readPizza(f)
+        self.sliceCoordinates = []
 
     def readPizza(self, f):
         y = 0
@@ -86,6 +87,7 @@ class Pizza(object):
             for column in range(c1, c2 + 1):
                 self.slices[row][column] = self.sliceCounter
         self.sliceCounter += 1
+        self.sliceCoordinates.append('%d %d %d %d' % (r1, r2, c1, c2))
         return True
 
     def result(self):
@@ -96,20 +98,23 @@ class Pizza(object):
                     pizzaUsage += 1
         return pizzaUsage
 
+    def printResult(self):
+        sys.stdout.write(str(self.sliceCounter))
+        sys.stdout.write('\n')
+        for coords in self.sliceCoordinates:
+            sys.stdout.write(coords)
+            sys.stdout.write('\n')
+
     def sliceCount(self):
         return self.sliceCounter
 
 if __name__ == "__main__":
-    pitsu = Pizza('../data/big.in')
-    start=datetime.now()
-    for i in range(100):
-        pitsu.addSlice(0, 6, 0, 1)
-    print "Addslice runtime", datetime.now()-start
-    print pitsu.result()
-"""=======
     dataset = sys.argv[1]
     pitsu = Pizza('../data/' + dataset + '.in')
-    print pitsu.printPizza()
+    #print pitsu.printPizza()
     pitsu.addSlice(0, 1, 0, 1)
-    print pitsu.printSlices()
->>>>>>> 3df6a5604da35e8fef6f5798ff3ad806633caa91"""
+    #pitsu.addSlice(1, 2, 1, 2)
+    #print pitsu.printSlices()
+    #print pitsu.sliceCount()
+    #print 'Result:'
+    pitsu.printResult()
