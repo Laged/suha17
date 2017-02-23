@@ -42,7 +42,7 @@ class Pizza(object):
     def printSlices(self):
         for row in self.slices:
             for column in row:
-                sys.stdout.write(str(column))
+                sys.stdout.write("%02x|" % column)
             sys.stdout.write('\n')
 
     def charToEnum(self, c):
@@ -62,7 +62,7 @@ class Pizza(object):
         counts = [0, 0]
 
         #Check input validity
-        if (r2 > self.rows or c2 > self.columns):
+        if (r2 >= self.rows or c2 >= self.columns or r1 < 0 or c1 < 0):
             return False
 
         if (r1 > r2 or c1 > c2):
