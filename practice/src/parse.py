@@ -73,8 +73,8 @@ class Pizza(object):
             return False
 
         #Check that the area is empty and has both stuffings
-        for row in range(r1, r2 + 1):
-            for column in range(c1, c2 + 1):
+        for row in xrange(r1, r2 + 1):
+            for column in xrange(c1, c2 + 1):
                 if (self.slices[row][column] != 0):
                     return True #Slice conflict
                 counts[self.pizza[row][column]] += 1
@@ -84,8 +84,8 @@ class Pizza(object):
             return False
 
         #If everything is ok add the slice
-        for row in range(r1, r2 + 1):
-            for column in range(c1, c2 + 1):
+        for row in xrange(r1, r2 + 1):
+            for column in xrange(c1, c2 + 1):
                 self.slices[row][column] = self.sliceCounter
         self.sliceCounter += 1
         return True
