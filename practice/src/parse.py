@@ -47,12 +47,31 @@ class Pizza(object):
 
     def addSlice(r1, r2, c1, c2):
         error = False
+        hasTomato = False
+        hasMushroom = False
+
+        #Check input validity
+        if (r2 > self.rows || c2 > self.columns):
+            return False
+
+        if (r1 > r2 || c1 > c2):
+            return False
+
+        #Check that the area is empty and has both stuffings
         for row in range(r1, r2):
             for column in range(c1, c2):
                 if (self.slices[row][column] != 0):
                     error = True
+                if (self.pizza[row][column] == 0):
+                    hasTomato = True
+                if (self.pizza[row][column] == 1):
+                    hasMushroom = True
         if (error):
             return False
+        if (!hasTomato || !hasMushroom):
+            return False
+
+        #If everything is ok add the slice
         for row in range(r1, r2):
             for column in range(c1, c2):
                 self.slices[row][column] = self.sliceCounter
@@ -60,7 +79,12 @@ class Pizza(object):
         return True
 
     def result():
-        return self.sliceCounter
+        pizzaUsage = 0
+        for row in range(r1, r2):
+            for column in range(c1, c2):
+                if (self.slices[row][column] != 0):
+                    pizzaUsage += 1
+        return pizzaUsage
 
 
 pitsu = Pizza('../data/small.in')
