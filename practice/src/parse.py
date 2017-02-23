@@ -1,6 +1,9 @@
 import numpy as np
 import sys
 from datetime import datetime
+from random import randint, seed
+
+seed(1203)
 
 
 class Pizza(object):
@@ -11,7 +14,7 @@ class Pizza(object):
         self.columns = int(metadata[1])
         self.minIngredients = int(metadata[2])
         self.maxCells = int(metadata[3])
-        self.pizza = np.empty([self.rows, self.columns])
+        self.pizza = np.empty([self.rows, self.columns], dtype=int)
         self.pizza.astype(int)
         self.slices = np.empty([self.rows, self.columns], dtype=int)
         self.slices.fill(0)
@@ -54,8 +57,8 @@ class Pizza(object):
         }[e]
 
     def addSlice(self, r1, r2, c1, c2):
-        tomatoCount = 0
-        mushroomCount = 0
+        #Index 0 is for tomatos, index 1 for mushroom
+        counts = [0, 0]
 
         #Check input validity
         if (r2 > self.rows or c2 > self.columns):
@@ -74,10 +77,9 @@ class Pizza(object):
             for column in range(c1, c2 + 1):
                 if (self.slices[row][column] != 0):
                     return True #Slice conflict
-                if (self.pizza[row][column] == 0):
-                    tomatoCount += 1
-                if (self.pizza[row][column] == 1):
-                    mushroomCount += 1
+                counts[self.pizza[row][column]] += 1
+        tomatoCount = counts[0]
+        mushroomCount = counts[1]
         if (tomatoCount < self.minIngredients or mushroomCount < self.minIngredients):
             return False
 
@@ -102,8 +104,10 @@ class Pizza(object):
 if __name__ == "__main__":
     pitsu = Pizza('../data/big.in')
     start=datetime.now()
-    for i in range(100):
-        pitsu.addSlice(0, 6, 0, 1)
+    for i in range(10000):
+        xStart = randint(100, 900)
+        yStart = randint(100, 900)
+        pitsu.addSlice(randint(0, 2) + xStart, randint(2,6) + xStart, randint(0, 2) + yStart, randint(2, 6) + yStart)
     print "Addslice runtime", datetime.now()-start
     print pitsu.result()
 """=======
