@@ -8,6 +8,7 @@ class Cache(object):
         self.size = size
         self.candidates = []
         self.videoSavings = { }
+        self.avgVideoSize = 0.0
 
     #Add a video that might be added on this server
     def addCandidate(self, video):
