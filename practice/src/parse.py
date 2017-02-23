@@ -1,5 +1,7 @@
 import numpy as np
 import sys
+from datetime import datetime
+
 
 class Pizza(object):
     def __init__(self, filename):
@@ -99,5 +101,8 @@ class Pizza(object):
 
 if __name__ == "__main__":
     pitsu = Pizza('../data/big.in')
-    pitsu.addSlice(0, 6, 0, 1)
+    start=datetime.now()
+    for i in range(100):
+        pitsu.addSlice(0, 6, 0, 1)
+    print "Addslice runtime", datetime.now()-start
     print pitsu.result()
