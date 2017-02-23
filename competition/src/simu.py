@@ -41,7 +41,7 @@ def main(endpoints, caches, videos):
         for video in cache.candidates:
             for endpoint in endpoints:
                 if (video in endpoint.videos and cache in endpoint.caches):
-                    weight = composeWeight(cache, video, endpoint)
+                    weight = endpoint.requests[video.id] #composeWeight(cache, video, endpoint)
                     cache.requestAddition(video, weight)
             j+=1
             print "video ready", j, "of", videoL
