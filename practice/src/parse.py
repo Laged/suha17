@@ -101,7 +101,7 @@ class Pizza(object):
     def sliceCount(self):
         return self.sliceCounter
 
-if __name__ == "__main__":
+def perfTest():
     pitsu = Pizza('../data/big.in')
     start=datetime.now()
     for i in range(10000):
@@ -110,6 +110,9 @@ if __name__ == "__main__":
         pitsu.addSlice(randint(0, 2) + xStart, randint(2,6) + xStart, randint(0, 2) + yStart, randint(2, 6) + yStart)
     print "Addslice runtime", datetime.now()-start
     print pitsu.result()
+
+if __name__ == "__main__":
+    perfTest()
 """=======
     dataset = sys.argv[1]
     pitsu = Pizza('../data/' + dataset + '.in')
