@@ -47,14 +47,19 @@ class Pizza(object):
 
     def addSlice(r1, r2, c1, c2):
         error = False
-        hasTomato = False
-        hasMushroom = False
+        tomatoCount = 0
+        mushroomCount = 0
 
         #Check input validity
-        if (r2 > self.rows || c2 > self.columns):
+        if (r2 > self.rows or c2 > self.columns):
             return False
 
-        if (r1 > r2 || c1 > c2):
+        if (r1 > r2 or c1 > c2):
+            return False
+
+        #Check size validity
+        size = (r2-r1+1)*(c2-c1+1)
+        if (size > maxCells):
             return False
 
         #Check that the area is empty and has both stuffings
@@ -63,12 +68,12 @@ class Pizza(object):
                 if (self.slices[row][column] != 0):
                     error = True
                 if (self.pizza[row][column] == 0):
-                    hasTomato = True
+                    tomatoCount += 1
                 if (self.pizza[row][column] == 1):
-                    hasMushroom = True
+                    mushroomCount += 1
         if (error):
             return False
-        if (!hasTomato || !hasMushroom):
+        if (tomatoCount < self.minIngredients or mushroomCount < self.minIngredients):
             return False
 
         #If everything is ok add the slice
