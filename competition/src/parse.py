@@ -5,7 +5,7 @@ class Cache(object):
     def __init__(self, id, size):
         self.id = id
         self.size = size
-        self.parsed = { }
+        self.videoSavings = { }
 
     #Add a video that might be added on this server
     def addCandidate(video, endpoint):
