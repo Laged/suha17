@@ -1,5 +1,6 @@
 import numpy as np
 import sys
+import operator
 
 
 class Cache(object):
@@ -7,6 +8,7 @@ class Cache(object):
         self.id = id
         self.size = size
         self.candidates = []
+        self.finalVideos
         self.weights = { }
 
     #Add a video that might be added on this server
@@ -14,10 +16,34 @@ class Cache(object):
         self.candidates.append(video)
 
     def requestAddition(self, video, weight):
+        #Tää kusahti
         if self.weights.contains(video.id)
-            self.weights[video.id] += weight
+            self.weights[video.id].append(weight)
         else:
-            self.weights[video.id] = weight
+            self.weights[video.id] = [weight]
+
+    def sortFunction(self, tupl):
+        totalWeight = 0
+        weights = tupl[1]
+        for w in weights:
+            totalWeight += w.calculate()
+        return totalWeight
+
+    def pickBest(self, videosByIndex, solutions):
+        x = self.weights
+        sortedValues = sorted(x.items(), key=self.sortFunction)
+        space = self.size
+        for item in sortedValues:
+            video = videosByIndex[item[0]]
+            space -= space
+            if (space > 0):
+                self.finalVideos.append(video)
+                weights = item[1]
+                for w in weights:
+                    for pVal in w:
+                        pVals.recalculate(video.id, w.endpointId)
+            else:
+                break
 
 
 
