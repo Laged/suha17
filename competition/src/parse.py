@@ -1,18 +1,24 @@
 import numpy as np
 import sys
 
+
 class Cache(object):
     def __init__(self, id, size):
         self.id = id
         self.size = size
+        self.candidates = []
         self.videoSavings = { }
 
     #Add a video that might be added on this server
-    def addCandidate(video, endpoint):
-        if self.preparsed.contains(video.index)
-            self.videoSavings[video.id] += endpoint.requests[video.id] * endpoint.latencies[self.id]
+    def addCandidate(self, video):
+        self.candidates.append(video)
+
+    def requestAddition(self, video, weight):
+        if self.videoSavings.contains(video.index)
+            self.videoSavings[video.id] += weight
         else:
-            self.videoSavings[video.id] = endpoint.requests[video.id] * endpoint.latencies[self.id]
+            self.videoSavings[video.id] = weight
+
 
 class CacheList(object):
     def __init__(self, cacheCount, cacheSize):
