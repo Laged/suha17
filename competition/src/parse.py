@@ -83,6 +83,31 @@ class Endpoint(object):
 #List of Endpoint objects
 endpointList = []
 
+def score(caches, endpoints):
+    n_requests = 0
+    score = 0
+
+    kissa = [[] for i in range(len(videoList))]
+    for c_id in len(caches):
+        for v_id in caches[c_id].finalVideos:
+            kissa[v_id].append(c_id)
+
+    for ep in endpoints:
+        for v_id, v_n in ep.requests:
+            L_D = v_n * ep.d_latency
+            saved = 0
+
+            for c_id in kissa[v_id]:
+                if c_id in ep.caches:
+                    saved_ = L_D - ep.latencies[c_id] * v_n
+                    if saved_ > saved:
+                        saved = saved_
+            
+            score += saved           
+            n_requests += v_n
+    
+    return float(score) / n_requests
+
 def loadData(path):
     # Parse and print metadata
     file = open(path)
