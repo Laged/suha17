@@ -30,14 +30,23 @@ class Weight(object):
 
 def main(endpoints, caches, videos):
     # Add candidates to all caches
+    print "Start main"
     preparse(endpoints)
     # Add weights
+    length = len(caches)
+    i=0
+    j=0
+    videoL = len(videos)
     for cache in caches:
         for video in cache.candidates:
             for endpoint in endpoints:
                 if (video in endpoint.videos and cache in endpoint.caches):
                     weight = composeWeight(cache, video, endpoint)
                     cache.requestAddition(video, weight)
+            j+=1
+            print "video ready", j, "of", videoL
+        i += 1
+        print i, "out of", length
 
     #pick best weights
     for cache in caches:
@@ -56,7 +65,8 @@ def composeWeight(cache, video, endpoint):
     allP = [HasSpace(probability(cache, video), video.id, endpoint.id)]
     allBaselines = [savings]
     # TODO: Is first probability already with precondition NOT this server ?
-    for altCache in endpoint.caches:
+    iterVals = endpoint.caches[0]
+    for altCache in iterVals:
         p = HasSpace(probability(altCache, video), video.id, endpoint.id)
         trueP = chainedProbability(allP) * p.p
         savings -= trueP * baseline(altCache, video, endpoint)
@@ -85,6 +95,7 @@ def probability(cache, video):
 def preparse(endpoints):
     for endpoint in endpoints:
         for cache in endpoint.caches:
+            #print "Here are", len(endpoint.videos), "videos"
             for video in endpoint.videos:
                 if video.size < cache.size:
                     cache.addCandidate(video)

@@ -18,7 +18,7 @@ class Cache(object):
         self.candidates.append(video)
 
     def requestAddition(self, video, weight):
-        if (video.id in self.weights.keys()):
+        if (video.id in self.weights):
             self.weights[video.id].append(weight)
         else:
             self.weights[video.id] = [weight]
