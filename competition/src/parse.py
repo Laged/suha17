@@ -10,9 +10,23 @@ class CacheList(object):
     def __init__(self, cacheCount, cacheSize):
         self.list = [] # TODO initialize this with Cache objects with real ids
 
-class Videos(object):
+class Video(object):
+    def __init__(self, id, size):
+        self.id = id
+        self.size = size
+
+class VideoList(object):
     def __init__(self, videoSizes):
-        self.list = videoSizes # List of the video sizes [100, 100, 100]
+        self.list = [] # TODO List of the Video objects
+
+class Endpoint(object):
+    def __init__(self, latencyList, requestList):
+        self.latencies = {}
+        self.requests = {} # {Video.id, requestCount} 
+
+class EndpointList(object):
+    def __init__(self, latencyList):
+        self.list = [] # TODO List of Endpoint objects
 
 def loadData(path):
     print 'Parsing: ' + path
