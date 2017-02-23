@@ -39,6 +39,7 @@ class Endpoint(object):
         self.latencies = {}
         self.requests = {} # {Video.id, requestCount}
         self.caches = self.latencies.keys()
+        self.dc_latency = 0
 
 class EndpointList(object):
     def __init__(self, latencyList):
