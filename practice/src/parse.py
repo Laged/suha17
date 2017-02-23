@@ -8,7 +8,7 @@ class Pizza(object):
         self.rows = int(metadata[0])
         self.columns = int(metadata[1])
         self.minIngredients = int(metadata[2])
-        self.maxCells = metadata[3]
+        self.maxCells = int(metadata[3])
         self.pizza = np.empty([self.rows, self.columns])
         self.pizza.astype(int)
         self.slices = np.empty([self.rows, self.columns], dtype=int)
@@ -86,16 +86,18 @@ class Pizza(object):
         self.sliceCounter += 1
         return True
 
-    def result():
+    def result(self):
         pizzaUsage = 0
-        for row in range(r1, r2 + 1):
-            for column in range(c1, c2 + 1):
+        for row in range(0, self.rows):
+            for column in range(0, self.columns):
                 if (self.slices[row][column] != 0):
                     pizzaUsage += 1
         return pizzaUsage
 
+    def sliceCount(self):
+        return self.sliceCounter
+
 if __name__ == "__main__":
-    pitsu = Pizza('../data/small.in')
-    print pitsu.printPizza()
-    pitsu.addSlice(0, 1, 0, 1)
-    print pitsu.printSlices()
+    pitsu = Pizza('../data/big.in')
+    pitsu.addSlice(0, 6, 0, 1)
+    print pitsu.result()
