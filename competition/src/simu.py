@@ -29,7 +29,7 @@ class Weight(object):
 
 
 def main(endpoints, caches, videos):
-    #Add candidates to all caches
+    # Add candidates to all caches
     preparse(endpoints)
     # Add weights
     for cache in caches:
@@ -78,9 +78,10 @@ def probability(cache, video):
     probability = pow(1/averageVideosCount, nTimesAverage)
 
 def preparse(endpoints):
-    for cache in endpoints.caches:
-        for video in endpoints.videos:
-            if video.size < cache.size:
-                cache.addCandidate(video)
+    for endpoint in endpoints:
+        for cache in endpoint.caches:
+            for video in endpoints.videos:
+                if video.size < cache.size:
+                    cache.addCandidate(video)
 
 main([], [], [])
