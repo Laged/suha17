@@ -5,7 +5,6 @@ import operator
 
 class Cache(object):
     def __init__(self, id, size):
-        print 'Cache ' + str(id) + ' ' + str(size)
         self.id = id
         self.size = size
         self.candidates = []
@@ -54,7 +53,6 @@ cacheList = []
 
 class Video(object):
     def __init__(self, id, size):
-        print 'Video ' + str(id) + ' ' + str(size)
         self.id = id
         self.size = size
 
@@ -67,7 +65,6 @@ videoList = []
 
 class Endpoint(object):
     def __init__(self, id, dcLatency):
-        print 'Endpoint ' + str(id) + ' ' + str(dcLatency)
         self.latencies = {}
         self.id = id
         self.requests = {} # {Video.id, requestCount}
@@ -75,13 +72,14 @@ class Endpoint(object):
         self.dc_latency = dcLatency
     def setLatencyToCache(self, cacheId, latency):
         self.latencies[cacheId] = latency
+    def setRequestCount(self, videoId, count):
+        self.requests[videoId] = count
 
 #List of Endpoint objects
 endpointList = []
 
 def loadData(path):
     # Parse and print metadata
-    print 'Parsing: ' + path
     file = open(path)
     metadata = file.readline().split(' ')
     videoCount = int(metadata[0])
@@ -94,7 +92,6 @@ def loadData(path):
     print 'requestCount ' + str(requestCount)
     print 'cacheCount ' + str(cacheCount)
     print 'cacheSize ' + str(cacheSize)
-
     # Initialize actual classes
     # Initalize caches 
     for cacheId in range(cacheCount):
@@ -105,7 +102,6 @@ def loadData(path):
     # TODO INITIALIZE VIDEOS
     for videoId in range(len(videoSizes)):
         videoList.append(Video(videoId, videoSizes[videoId]))
-    print 'len videoList ' + str(len(videoList))
     # Initialize endpoints
     states = ["cacheDescription", "cacheData", "request"]
     state = "cacheDescription"
@@ -128,14 +124,11 @@ def loadData(path):
             if dataLeft == 0:
                 state = "cacheDescription"
         elif state == "request":
-            #TODO
-            print "requestData"
-            print lineData
+            videoId = int(lineData[0])
+            endpointId = int(lineData[1])
+            requestCount = int(lineData[2])
+            endpointList[endpointId].setRequestCount(videoId, requestCount)
 
 if __name__ == "__main__":
     dataPath = '../data/' + sys.argv[1] + '.in'
-    print 'dataPath ' + dataPath
     loadData(dataPath)
-    print cacheList
-    print endpointList
-    print videoList
