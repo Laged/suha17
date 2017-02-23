@@ -94,8 +94,8 @@ class Pizza(object):
                     pizzaUsage += 1
         return pizzaUsage
 
-
-pitsu = Pizza('../data/small.in')
-print pitsu.printPizza()
-pitsu.addSlice(0, 1, 0, 1)
-print pitsu.printSlices()
+if __name__ == "__main__":
+    pitsu = Pizza('../data/small.in')
+    print pitsu.printPizza()
+    pitsu.addSlice(0, 1, 0, 1)
+    print pitsu.printSlices()
