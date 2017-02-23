@@ -95,7 +95,8 @@ class Pizza(object):
         return pizzaUsage
 
 if __name__ == "__main__":
-    pitsu = Pizza('../data/small.in')
+    dataset = sys.argv[1]
+    pitsu = Pizza('../data/' + dataset + '.in')
     print pitsu.printPizza()
     pitsu.addSlice(0, 1, 0, 1)
     print pitsu.printSlices()
