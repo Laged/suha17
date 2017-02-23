@@ -20,6 +20,7 @@ class Pizza(object):
         self.slices.fill(0)
         self.sliceCounter = 1
         self.readPizza(f)
+        self.sliceCoordinates = []
 
     def readPizza(self, f):
         y = 0
@@ -88,6 +89,7 @@ class Pizza(object):
             for column in xrange(c1, c2 + 1):
                 self.slices[row][column] = self.sliceCounter
         self.sliceCounter += 1
+        self.sliceCoordinates.append('%d %d %d %d' % (r1, r2, c1, c2))
         return True
 
     def result(self):
@@ -98,25 +100,51 @@ class Pizza(object):
                     pizzaUsage += 1
         return pizzaUsage
 
+    def printResult(self):
+        sys.stdout.write(str(self.sliceCounter))
+        sys.stdout.write('\n')
+        for coords in self.sliceCoordinates:
+            sys.stdout.write(coords)
+            sys.stdout.write('\n')
+
     def sliceCount(self):
         return self.sliceCounter
 
-def perfTest():
-    pitsu = Pizza('../data/big.in')
+def perfTest(file = '../data/big.in'):
+    pitsu = Pizza(file)
     start=datetime.now()
-    for i in range(10000):
-        xStart = randint(100, 900)
-        yStart = randint(100, 900)
-        pitsu.addSlice(randint(0, 2) + xStart, randint(2,6) + xStart, randint(0, 2) + yStart, randint(2, 6) + yStart)
-    print "Addslice runtime", datetime.now()-start
-    print pitsu.result()
+    xMax = pitsu.rows-1
+    yMax = pitsu.columns-1
+    for i in range(100000000):
+        xStart = randint(0, pitsu.rows-1)
+        yStart = randint(0, pitsu.columns-1)
+        pitsu.addSlice(xStart, min(xMax, xStart + randint(0,7)), yStart, min(yStart + randint(0,7), yMax))
+    #print "Addslice runtime", datetime.now()-start
+    print "Estimated result", pitsu.result()
+    pitsu.printResult()
+    #print "Estimated score", pitsu.result()
+
+def shotgun(logfile):
+    pitsu = Pizza(logfile)
+    maxResult = pitsu.result()
+    if (pitsu.rows > 300 or pitsu.columns > 300):
+        perfTest(logfile)
+    attempts = 100
+    for a in range(attempts):
+        pitsu = Pizza(logfile)
+        xMax = pitsu.rows-1
+        yMax = pitsu.columns-1
+        for i in range(10000):
+            xStart = randint(0, xMax)
+            yStart = randint(0, yMax)
+            pitsu.addSlice(xStart, min(xMax, xStart + randint(0,7)), yStart, min(yStart + randint(0,7), yMax))
+
+        if (pitsu.result() > maxResult):
+            maxResult = pitsu.result()
+            bestResult = pitsu
+    print "Estimated result", pitsu.result()
+    bestResult.printResult()
 
 if __name__ == "__main__":
-    perfTest()
-"""=======
     dataset = sys.argv[1]
-    pitsu = Pizza('../data/' + dataset + '.in')
-    print pitsu.printPizza()
-    pitsu.addSlice(0, 1, 0, 1)
-    print pitsu.printSlices()
->>>>>>> 3df6a5604da35e8fef6f5798ff3ad806633caa91"""
+    shotgun('../data/' + dataset + '.in')
