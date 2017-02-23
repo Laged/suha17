@@ -10,9 +10,9 @@ class Cache(object):
     #Add a video that might be added on this server
     def addCandidate(video, endpoint):
         if self.preparsed.contains(video.index)
-            self.videoSavings[video.index] += endpoint.requests[video.index] * endpoint.latencies[self.id]
+            self.videoSavings[video.id] += endpoint.requests[video.id] * endpoint.latencies[self.id]
         else:
-            self.videoSavings[video.index] = endpoint.requests[video.index] * endpoint.latencies[self.id]
+            self.videoSavings[video.id] = endpoint.requests[video.id] * endpoint.latencies[self.id]
 
 class CacheList(object):
     def __init__(self, cacheCount, cacheSize):
