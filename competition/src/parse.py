@@ -8,8 +8,10 @@ class Cache(object):
         self.id = id
         self.size = size
         self.candidates = []
-        self.finalVideos
+        self.finalVideos = []
         self.weights = { }
+        self.videoSavings = { }
+        self.avgVideoSize = 0.0
 
     #Add a video that might be added on this server
     def addCandidate(self, video):
@@ -66,6 +68,7 @@ class Endpoint(object):
         self.latencies = {}
         self.requests = {} # {Video.id, requestCount}
         self.caches = self.latencies.keys()
+        self.dc_latency = 0
 
 class EndpointList(object):
     def __init__(self, latencyList):
