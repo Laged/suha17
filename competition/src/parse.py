@@ -18,7 +18,7 @@ class Cache(object):
         self.candidates.append(video)
 
     def requestAddition(self, video, weight):
-        if self.weights.contains(video.id):
+        if (video.id in self.weights.keys()):
             self.weights[video.id].append(weight)
         else:
             self.weights[video.id] = [weight]
@@ -30,19 +30,19 @@ class Cache(object):
             totalWeight += w.calculate()
         return totalWeight
 
-    def pickBest(self, videosByIndex, solutions):
+    def pickBest(self, videosByIndex):
         x = self.weights
         sortedValues = sorted(x.items(), key=self.sortFunction)
         space = self.size
         for item in sortedValues:
             video = videosByIndex[item[0]]
-            space -= space
+            space -= video.size
             if (space > 0):
                 self.finalVideos.append(video)
                 weights = item[1]
                 for w in weights:
-                    for pVal in w:
-                        pVals.recalculate(video.id, w.endpointId)
+                    for pVal in w.probs:
+                        pVal.recalculate(video.id, w.endpointId)
             else:
                 break
 
@@ -68,12 +68,17 @@ class Endpoint(object):
         self.latencies = {}
         self.id = id
         self.requests = {} # {Video.id, requestCount}
-        self.caches = self.latencies.keys()
         self.dc_latency = dcLatency
+        self.caches = []
+        self.videos = []
+
     def setLatencyToCache(self, cacheId, latency):
         self.latencies[cacheId] = latency
+        self.caches.append(cacheList[cacheId])
+
     def setRequestCount(self, videoId, count):
         self.requests[videoId] = count
+        self.videos.append(videoList[videoId])
 
 #List of Endpoint objects
 endpointList = []
@@ -93,7 +98,7 @@ def loadData(path):
     print 'cacheCount ' + str(cacheCount)
     print 'cacheSize ' + str(cacheSize)
     # Initialize actual classes
-    # Initalize caches 
+    # Initalize caches
     for cacheId in range(cacheCount):
         cacheList.append(Cache(len(cacheList), cacheSize))
 

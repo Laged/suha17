@@ -20,11 +20,11 @@ class Weight(object):
         self.latencies = latencies
         self.endpointId = endpointId
 
-    def calculate():
+    def calculate(self):
         weight = 0
         for p in self.probs:
             for l in self.latencies:
-                w += p*l
+                weight += p.p*l
         return weight
 
 
@@ -33,19 +33,21 @@ def main(endpoints, caches, videos):
     preparse(endpoints)
     # Add weights
     for cache in caches:
-        for video in caches.candidates:
+        for video in cache.candidates:
             for endpoint in endpoints:
-                if (endpoint.vidoes.contains(video)):
+                if (video in endpoint.videos and cache in endpoint.caches):
                     weight = composeWeight(cache, video, endpoint)
                     cache.requestAddition(video, weight)
 
     #pick best weights
     for cache in caches:
         cache.pickBest(videos)
+    return caches
 
 
 def baseline(cache, video, endpoint):
-    return (endpoint.delay(cache) - endpoint.delay(datacenter))*endpoint.requests[video.id]
+    l = endpoint.latencies[cache.id]
+    return ( l - endpoint.dc_latency)*endpoint.requests[video.id]
 
 def composeWeight(cache, video, endpoint):
     # Initial savings is the baseline for current
@@ -56,32 +58,39 @@ def composeWeight(cache, video, endpoint):
     # TODO: Is first probability already with precondition NOT this server ?
     for altCache in endpoint.caches:
         p = HasSpace(probability(altCache, video), video.id, endpoint.id)
-        trueP = chainedProbability(allP) * p
-        savings -= trueP * baseline(altCache, video)
+        trueP = chainedProbability(allP) * p.p
+        savings -= trueP * baseline(altCache, video, endpoint)
         allP.append(p)
-        allBaselines.append(baseline(altCache, video))
+        allBaselines.append(baseline(altCache, video, endpoint))
     returnObject = Weight(allP, allBaselines, endpoint.id)
+    return returnObject
 
 def chainedProbability(ps):
     p = 1
     for val in ps:
         p = p * (1-val.p)
+    return p
 
 def probability(cache, video):
     totalVideos = 0
     # TODO: Cache total size of candidates
     for video in cache.candidates:
-        totalVidoes += video.size
-    averageSize = totalVidoes/cache.preparsedVideos.length()
+        totalVideos += video.size
+    averageSize = totalVideos/len(cache.candidates)
     averageVideosCount = cache.size/averageSize
     nTimesAverage = video.size/averageSize
     probability = pow(1/averageVideosCount, nTimesAverage)
+    return probability
 
 def preparse(endpoints):
     for endpoint in endpoints:
         for cache in endpoint.caches:
-            for video in endpoints.videos:
+            for video in endpoint.videos:
                 if video.size < cache.size:
                     cache.addCandidate(video)
 
-main([], [], [])
+loadData('../data/3.in')
+
+results = main(endpointList, cacheList, videoList)
+for cache in results:
+    print cache.finalVideos
