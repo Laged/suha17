@@ -88,22 +88,23 @@ def score(caches, endpoints):
     score = 0
 
     kissa = [[] for i in range(len(videoList))]
-    for c_id in len(caches):
-        for v_id in caches[c_id].finalVideos:
-            kissa[v_id].append(c_id)
+    for c_id in range(len(caches)):
+        for vid in caches[c_id].finalVideos:
+            kissa[vid.id].append(c_id)
 
     for ep in endpoints:
-        for v_id, v_n in ep.requests:
-            L_D = v_n * ep.d_latency
+        for v_id, v_n in ep.requests.iteritems():
+            L_D = v_n * ep.dc_latency
             saved = 0
 
             for c_id in kissa[v_id]:
-                if c_id in ep.caches:
+                if c_id in ep.latencies.keys():
                     saved_ = L_D - ep.latencies[c_id] * v_n
+                    print(saved_)
                     if saved_ > saved:
                         saved = saved_
             
-            score += saved           
+            score += saved
             n_requests += v_n
     
     return float(score) / n_requests
